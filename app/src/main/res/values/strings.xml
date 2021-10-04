@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">LocationTrial</string>
+    <string name="map_key" translatable="false">AIzaSyAGY16HouQP3xupWzeFoVqFhnrszZpD-XE</string>
+    <string name="Location_Name">Location Name</string>
+
+</resources>
