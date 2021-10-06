@@ -157,10 +157,11 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
         openFragment.setOnClickListener(view ->{
             Bundle bundle = new Bundle();
-
+            bundle.putParcelableArrayList("places", locations);
 
             openFragment.setVisibility(View.GONE);
             Fragment fragment = new ListTasks();
+            fragment.setArguments(bundle);
             getSupportFragmentManager().beginTransaction().replace(R.id.main_activity, fragment).commit();
         });
     }

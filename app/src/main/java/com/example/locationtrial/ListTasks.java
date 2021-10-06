@@ -27,7 +27,8 @@ public class ListTasks extends Fragment {
     private Button button;
     private EditText input;
     private Spinner dropdown;
-    private ArrayList<String> locations;
+    private ArrayList<Places> locations;
+    private ArrayList<String> location_names;
     private ArrayAdapter<String> locationsAdapter;
 
     public ListTasks() {
@@ -52,6 +53,8 @@ public class ListTasks extends Fragment {
         input = (EditText) view.findViewById(R.id.editTextTextPersonName2);
         dropdown = (Spinner) view.findViewById(R.id.dropdown);
 
+        locations = this.getArguments().getParcelableArrayList("places");
+
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,16 +68,18 @@ public class ListTasks extends Fragment {
         listView.setAdapter(itemsAdapter);
         setUpListViewListener();
 
-        locations = new ArrayList<>();
+        location_names = new ArrayList<>();
         getLocations();
-        locationsAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, locations);
+        locationsAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, location_names);
         dropdown.setAdapter(locationsAdapter);
 
         return view;
     }
 
     private void getLocations() {
-
+        for (Places p: locations){
+            location_names.add(p.getPlace_name());
+        }
     }
 
     private void setUpListViewListener() {
