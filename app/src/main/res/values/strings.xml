@@ -8,5 +8,6 @@
     <string name="reminders">Reminders</string>
     <string name="checklist">Checklist</string>
     <string name="notifications">Notifications</string>
+    <string name="notifs">Notifs</string>
 
 </resources>
