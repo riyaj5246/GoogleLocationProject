@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -25,6 +26,9 @@ public class ListTasks extends Fragment {
     private ListView listView;
     private Button button;
     private EditText input;
+    private Spinner dropdown;
+    private ArrayList<String> locations;
+    private ArrayAdapter<String> locationsAdapter;
 
     public ListTasks() {
         // Required empty public constructor
@@ -34,7 +38,6 @@ public class ListTasks extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 
     }
 
@@ -47,6 +50,7 @@ public class ListTasks extends Fragment {
         listView = (ListView) view.findViewById(R.id.listview);
         button = (Button) view.findViewById(R.id.button);
         input = (EditText) view.findViewById(R.id.editTextTextPersonName2);
+        dropdown = (Spinner) view.findViewById(R.id.dropdown);
 
 
         button.setOnClickListener(new View.OnClickListener() {
@@ -61,7 +65,16 @@ public class ListTasks extends Fragment {
         listView.setAdapter(itemsAdapter);
         setUpListViewListener();
 
+        locations = new ArrayList<>();
+        getLocations();
+        locationsAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, locations);
+        dropdown.setAdapter(locationsAdapter);
+
         return view;
+    }
+
+    private void getLocations() {
+
     }
 
     private void setUpListViewListener() {

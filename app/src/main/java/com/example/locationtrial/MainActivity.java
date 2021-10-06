@@ -39,12 +39,11 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     Location currentLocation;
     FusedLocationProviderClient fusedLocationProviderClient;
     private static final int REQUEST_CODE = 101;
-    private ArrayList<Places> locations = new ArrayList<>();
+    ArrayList<Places> locations = new ArrayList<>();
     FloatingActionButton addLocButton, confirmLoc, deleteLoc;
     EditText locNameText;
     MarkerOptions selectedLoc;
 
-    private static final int CONTENT_VIEW_ID = 10101010;
     Button openFragment;
 
     @Override
@@ -157,6 +156,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         });
 
         openFragment.setOnClickListener(view ->{
+            Bundle bundle = new Bundle();
+
             openFragment.setVisibility(View.GONE);
             Fragment fragment = new ListTasks();
             getSupportFragmentManager().beginTransaction().replace(R.id.main_activity, fragment).commit();
@@ -192,5 +193,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
             googleMap.addMarker(markerOptions);
         }
+    }
+
+    public ArrayList<Places> getPlaces(){
+        return locations;
     }
 }
