@@ -2,15 +2,20 @@ package com.example.locationtrial;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
+import android.app.FragmentTransaction;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +44,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     EditText locNameText;
     MarkerOptions selectedLoc;
 
+    private static final int CONTENT_VIEW_ID = 10101010;
+    Button openFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +56,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         locNameText = (EditText) findViewById(R.id.locNameTextField);
         confirmLoc = (FloatingActionButton) findViewById(R.id.confirmLoc);
         deleteLoc = (FloatingActionButton) findViewById(R.id.deleteLoc);
+        openFragment = (Button) findViewById(R.id.tochecklist);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         fetchLastLocation();
     }
@@ -145,6 +154,12 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             confirmLoc.setVisibility(View.INVISIBLE);
             addLocButton.setVisibility(View.INVISIBLE);
             deleteLoc.setVisibility(View.INVISIBLE);
+        });
+
+        openFragment.setOnClickListener(view ->{
+            openFragment.setVisibility(View.GONE);
+            Fragment fragment = new ListTasks();
+            getSupportFragmentManager().beginTransaction().replace(R.id.main_activity, fragment).commit();
         });
     }
 
