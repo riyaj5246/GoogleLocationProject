@@ -26,10 +26,12 @@ import java.util.Calendar;
  */
 public class AddingTaskFragment extends Fragment {
 
-    private EditText addTaskTitle, addTaskDescription, taskTime;
+    private EditText addTaskTitle, addTaskDescription, taskTime, taskDate;
     private Button addTask;
+    int mYear, mMonth, mDay;
     int mHour, mMinute;
     TimePickerDialog timePickerDialog;
+    DatePickerDialog datePickerDialog;
 
     public AddingTaskFragment() {
         // Required empty public constructor
@@ -59,6 +61,24 @@ public class AddingTaskFragment extends Fragment {
         addTaskDescription = screenview.findViewById(R.id.addTaskDescription);
         taskTime = screenview.findViewById(R.id.taskTime);
         addTask = screenview.findViewById(R.id.addTask);
+        taskDate = screenview.findViewById(R.id.taskDate);
+
+        taskDate.setOnTouchListener((view, motionEvent) -> {
+            if(motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                final Calendar c = Calendar.getInstance();
+                mYear = c.get(Calendar.YEAR);
+                mMonth = c.get(Calendar.MONTH);
+                mDay = c.get(Calendar.DAY_OF_MONTH);
+                datePickerDialog = new DatePickerDialog(getActivity(),
+                        (view1, year, monthOfYear, dayOfMonth) -> {
+                            taskDate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                            datePickerDialog.dismiss();
+                        }, mYear, mMonth, mDay);
+                datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+                datePickerDialog.show();
+            }
+            return true;
+        });
 
         taskTime.setOnTouchListener((view, motionEvent) -> {
             if(motionEvent.getAction() == MotionEvent.ACTION_UP) {
@@ -76,6 +96,10 @@ public class AddingTaskFragment extends Fragment {
                 timePickerDialog.show();
             }
             return true;
+        });
+
+        addTask.setOnClickListener(view ->{
+
         });
 
         // Inflate the layout for this fragment
