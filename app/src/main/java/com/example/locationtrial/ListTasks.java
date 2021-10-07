@@ -122,7 +122,6 @@ public class ListTasks extends Fragment {
                 Context context = getActivity().getApplicationContext();
                 Toast.makeText(context, "Item Removed", Toast.LENGTH_LONG).show();
 
-                //TODO: change to remove from correct arraylist
                 int index = locations.indexOf(currentLocSelected);
                 tasksForEachLocation.get(index).remove(i);
                 arrayAdaptersForEachLocation.get(index).notifyDataSetChanged();
