@@ -40,10 +40,12 @@
         android:id="@+id/dropdown"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:minHeight="32dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <View
         android:id="@+id/divider2"
@@ -56,8 +58,9 @@
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="382dp"
-        android:layout_height="655dp"
+        android:layout_width="374dp"
+        android:layout_height="590dp"
+        android:background="#FAA6A6"
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/divider"
         app:layout_constraintEnd_toEndOf="parent"
@@ -66,7 +69,7 @@
 
         <ListView
             android:id="@+id/listview"
-            android:layout_width="match_parent"
+            android:layout_width="392dp"
             android:layout_height="match_parent">
 
         </ListView>

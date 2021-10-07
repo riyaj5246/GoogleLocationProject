@@ -130,7 +130,14 @@ public class ListTasks extends Fragment {
                 Context context = getActivity().getApplicationContext();
                 Toast.makeText(context, "Item Removed", Toast.LENGTH_LONG).show();
 
-                int index = locations.indexOf(currentLocSelected);
+                int index;
+                if(currentLocSelected != null){
+                    index = locations.indexOf(currentLocSelected);
+                }
+                else{
+                    index = 0;
+                }
+
                 tasksForEachLocation.get(index).remove(i);
                 arrayAdaptersForEachLocation.get(index).notifyDataSetChanged();
 
