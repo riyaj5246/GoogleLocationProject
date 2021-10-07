@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,11 @@ public class ListTasks extends Fragment {
 
     private ArrayList<String> items;
     private ArrayAdapter<String> itemsAdapter;
+
+    private ArrayList<ArrayList<String>> tasksForEachLocation;
+    private ArrayList<ArrayAdapter<String>> arrayAdaptersForEachLocation;
+    private Places currentLocSelected;
+
     private ListView listView;
     private Button button;
     private EditText input;
@@ -55,7 +61,6 @@ public class ListTasks extends Fragment {
 
         locations = this.getArguments().getParcelableArrayList("places");
 
-
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -63,8 +68,11 @@ public class ListTasks extends Fragment {
             }
         });
 
-        items = new ArrayList<>();
-        itemsAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, items);
+        tasksForEachLocation = new ArrayList<ArrayList<String>>();
+        arrayAdaptersForEachLocation = new ArrayList<ArrayAdapter<String>>();
+
+        //items = new ArrayList<>();
+        //itemsAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, items);
         listView.setAdapter(itemsAdapter);
         setUpListViewListener();
 
@@ -73,13 +81,38 @@ public class ListTasks extends Fragment {
         locationsAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, location_names);
         dropdown.setAdapter(locationsAdapter);
 
+        manageDropDownSelections();
+
         return view;
     }
 
+    private void manageDropDownSelections() {
+        dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1,
+                                       int arg2, long arg3) {
+                button.setEnabled(true);
+                currentLocSelected = locations.get(arg2);
+                listView.setAdapter(arrayAdaptersForEachLocation.get(arg2));
+                System.out.println(currentLocSelected.getPlace_name());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+                button.setEnabled(false);
+            }
+        });
+    }
+
     private void getLocations() {
-        for (Places p: locations){
-            location_names.add(p.getPlace_name());
+        for(int i = 0; i < locations.size(); i++){
+            location_names.add(locations.get(i).getPlace_name());
+            //creates new arraylist for each location, and new array adapter to go along with it
+            tasksForEachLocation.add(new ArrayList<String>());
+            arrayAdaptersForEachLocation.add(new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1,tasksForEachLocation.get(i)));
         }
+
     }
 
     private void setUpListViewListener() {
@@ -89,8 +122,13 @@ public class ListTasks extends Fragment {
                 Context context = getActivity().getApplicationContext();
                 Toast.makeText(context, "Item Removed", Toast.LENGTH_LONG).show();
 
-                items.remove(i);
-                itemsAdapter.notifyDataSetChanged();
+                //TODO: change to remove from correct arraylist
+                int index = locations.indexOf(currentLocSelected);
+                tasksForEachLocation.get(index).remove(i);
+                arrayAdaptersForEachLocation.get(index).notifyDataSetChanged();
+
+//                items.remove(i);
+//                itemsAdapter.notifyDataSetChanged();
                 return true;
             }
         });
@@ -100,7 +138,9 @@ public class ListTasks extends Fragment {
         String itemText = input.getText().toString();
 
         if(!itemText.equals("")){
-            itemsAdapter.add(itemText);
+            int index = locations.indexOf(currentLocSelected);
+            tasksForEachLocation.get(index).add(itemText);
+            arrayAdaptersForEachLocation.get(index).notifyDataSetChanged();
             input.setText("");
         }
         else{
