@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -147,23 +148,28 @@ public class ListTasks extends Fragment {
     }
 
     private void addItem(View view) {
-        String itemText = input.getText().toString();
 
-        if(!itemText.equals("")){
-            int index;
-            if(currentLocSelected != null){
-                index = locations.indexOf(currentLocSelected);
-            }
-            else{
-                index = 0;
-            }
+        Fragment childFragment = new AddingTaskFragment();
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        transaction.replace(R.id.list_tasks, childFragment).commit();
 
-            tasksForEachLocation.get(index).add(itemText);
-            arrayAdaptersForEachLocation.get(index).notifyDataSetChanged();
-            input.setText("");
-        }
-        else{
-            Toast.makeText(getActivity().getApplicationContext(), "Please enter text...", Toast.LENGTH_LONG).show();
-        }
+//        String itemText = input.getText().toString();
+//
+//        if(!itemText.equals("")){
+//            int index;
+//            if(currentLocSelected != null){
+//                index = locations.indexOf(currentLocSelected);
+//            }
+//            else{
+//                index = 0;
+//            }
+//
+//            tasksForEachLocation.get(index).add(itemText);
+//            arrayAdaptersForEachLocation.get(index).notifyDataSetChanged();
+//            input.setText("");
+//        }
+//        else{
+//            Toast.makeText(getActivity().getApplicationContext(), "Please enter text...", Toast.LENGTH_LONG).show();
+//        }
     }
 }

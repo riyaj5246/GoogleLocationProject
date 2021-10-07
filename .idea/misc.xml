@@ -7,6 +7,9 @@
         <entry key="app/src/main/res/drawable/btn_template_foreground.xml" value="0.15648148148148147" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.15648148148148147" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/fragment_adding_task.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/fragment_creating_new_task_list_dialog.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_creating_new_task_list_dialog_item.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_notifs_list.xml" value="0.1" />
         <entry key="app/src/main/res/layout/list_tasks.xml" value="0.25" />
       </map>
