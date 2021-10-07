@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -150,6 +151,11 @@ public class ListTasks extends Fragment {
     private void addItem(View view) {
 
         Fragment childFragment = new AddingTaskFragment();
+        Bundle bundle = new Bundle();
+        TextView myText = (TextView) dropdown.getSelectedView();
+        String listName = myText.getText().toString();
+        bundle.putString("List Name", listName);
+        childFragment.setArguments(bundle);
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.replace(R.id.list_tasks, childFragment).commit();
 

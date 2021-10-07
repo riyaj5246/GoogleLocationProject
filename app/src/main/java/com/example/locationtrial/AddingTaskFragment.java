@@ -28,6 +28,7 @@ public class AddingTaskFragment extends Fragment {
 
     private EditText addTaskTitle, addTaskDescription, taskTime, taskDate;
     private Button addTask;
+    private String taskList;
     int mYear, mMonth, mDay;
     int mHour, mMinute;
     TimePickerDialog timePickerDialog;
@@ -62,6 +63,7 @@ public class AddingTaskFragment extends Fragment {
         taskTime = screenview.findViewById(R.id.taskTime);
         addTask = screenview.findViewById(R.id.addTask);
         taskDate = screenview.findViewById(R.id.taskDate);
+        taskList = this.getArguments().getString("List Name");
 
         taskDate.setOnTouchListener((view, motionEvent) -> {
             if(motionEvent.getAction() == MotionEvent.ACTION_UP) {
@@ -99,7 +101,9 @@ public class AddingTaskFragment extends Fragment {
         });
 
         addTask.setOnClickListener(view ->{
-
+            if(validateFields()){
+                Tasks newTask = new Tasks(addTaskTitle.getText().toString(), addTaskDescription.getText().toString(), taskTime.getText().toString(), "General Activity", taskDate.getText().toString());
+            }
         });
 
         // Inflate the layout for this fragment

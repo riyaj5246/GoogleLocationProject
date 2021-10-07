@@ -1,5 +1,7 @@
 package com.example.locationtrial;
 
+import android.text.Editable;
+
 public class Tasks {
 
     private final String taskName;
