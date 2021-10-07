@@ -127,8 +127,6 @@ public class ListTasks extends Fragment {
                 tasksForEachLocation.get(index).remove(i);
                 arrayAdaptersForEachLocation.get(index).notifyDataSetChanged();
 
-//                items.remove(i);
-//                itemsAdapter.notifyDataSetChanged();
                 return true;
             }
         });
