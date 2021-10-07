@@ -56,8 +56,8 @@
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="377dp"
-        android:layout_height="582dp"
+        android:layout_width="382dp"
+        android:layout_height="655dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/divider"
         app:layout_constraintEnd_toEndOf="parent"
