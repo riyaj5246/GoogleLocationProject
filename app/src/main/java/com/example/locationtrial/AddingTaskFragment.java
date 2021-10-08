@@ -137,6 +137,12 @@ public class AddingTaskFragment extends Fragment {
     }
 
     public boolean validateFields() {
+        for(Tasks t: allTasks){
+            if(addTaskTitle.getText().toString().equals(t.getTaskName())){
+                Toast.makeText(getActivity(), "Please enter a unique title", Toast.LENGTH_SHORT);
+                return false;
+            }
+        }
         if(addTaskTitle.getText().toString().equalsIgnoreCase("")) {
             Toast.makeText(getActivity(), "Please enter a valid title", Toast.LENGTH_SHORT).show();
             return false;

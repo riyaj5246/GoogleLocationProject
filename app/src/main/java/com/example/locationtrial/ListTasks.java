@@ -144,7 +144,7 @@ public class ListTasks extends Fragment {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Context context = getActivity().getApplicationContext();
-                Toast.makeText(context, "Item Removed", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Item Completed!", Toast.LENGTH_LONG).show();
 
                 int index;
                 if(currentLocSelected != null){
@@ -153,7 +153,13 @@ public class ListTasks extends Fragment {
                 else{
                     index = 0;
                 }
-
+                String taskName = tasksForEachLocation.get(index).get(i);
+                for(Tasks t: tasksList){
+                    if(t.getTaskName().equals(taskName)){
+                        tasksList.remove(t);
+                        break;
+                    }
+                }
                 tasksForEachLocation.get(index).remove(i);
                 arrayAdaptersForEachLocation.get(index).notifyDataSetChanged();
 
