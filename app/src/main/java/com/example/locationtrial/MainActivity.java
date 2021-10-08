@@ -177,6 +177,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 //                }
 //            }
 
+            addLocButton.setVisibility(View.GONE);
+            deleteLoc.setVisibility(View.GONE);
+            confirmLoc.setVisibility(View.GONE);
             openFragment.setVisibility(View.GONE);
             Fragment fragment = new ListTasks();
             fragment.setArguments(bundle);
