@@ -61,13 +61,18 @@ public class ListTasks extends Fragment {
         dropdown = (Spinner) view.findViewById(R.id.dropdown);
 
         tasksList = new ArrayList<>();
+        locations = new ArrayList<>();
 
         try{
             tasksList = this.getArguments().getParcelableArrayList("Tasks List");
+            locations = this.getArguments().getParcelableArrayList("places");
+
         }
         catch(Exception e){
         }
-        locations = this.getArguments().getParcelableArrayList("places");
+//        for (Places x: locations){
+//            System.out.println(x.getPlace_name());
+//        }
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -182,32 +187,16 @@ public class ListTasks extends Fragment {
         String listName = myText.getText().toString();
 
         bundle.putString("List Name", listName);
-        bundle.putParcelableArrayList("Tasks List", tasksList);
-        bundle.putParcelableArrayList("Locations", locations);
+        if(tasksList != null){
+            bundle.putParcelableArrayList("Tasks List", tasksList);
+        }
+        else{
+            bundle.putParcelableArrayList("Tasks List", new ArrayList<Tasks>());
+        }
+        bundle.putParcelableArrayList("places", locations);
         childFragment.setArguments(bundle);
 
         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_activity, childFragment).commit();
 
-//        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-//        transaction.replace(R.id.main_activity, childFragment).commit();
-
-//        String itemText = input.getText().toString();
-//
-//        if(!itemText.equals("")){
-//            int index;
-//            if(currentLocSelected != null){
-//                index = locations.indexOf(currentLocSelected);
-//            }
-//            else{
-//                index = 0;
-//            }
-//
-//            tasksForEachLocation.get(index).add(itemText);
-//            arrayAdaptersForEachLocation.get(index).notifyDataSetChanged();
-//            input.setText("");
-//        }
-//        else{
-//            Toast.makeText(getActivity().getApplicationContext(), "Please enter text...", Toast.LENGTH_LONG).show();
-//        }
     }
 }

@@ -73,7 +73,12 @@ public class AddingTaskFragment extends Fragment {
         taskList = this.getArguments().getString("List Name");
         allTasks = new ArrayList<>();
         allTasks = this.getArguments().getParcelableArrayList("Tasks List");
+        System.out.println(allTasks.size());
+        allLocations = new ArrayList<>();
         allLocations = this.getArguments().getParcelableArrayList("places");
+        for(Places p: allLocations){
+            System.out.println(p.getPlace_name());
+        }
 
         taskDate.setOnTouchListener((view, motionEvent) -> {
             if(motionEvent.getAction() == MotionEvent.ACTION_UP) {
@@ -119,7 +124,7 @@ public class AddingTaskFragment extends Fragment {
                 Fragment backToChecklist = new ListTasks();
                 Bundle bundle = new Bundle();
                 bundle.putParcelableArrayList("Tasks List", allTasks);
-                bundle.putParcelableArrayList("places", allLocations);
+                bundle.putParcelableArrayList("places", this.getArguments().getParcelableArrayList("places"));
                 backToChecklist.setArguments(bundle);
 
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_activity, backToChecklist).commit();
