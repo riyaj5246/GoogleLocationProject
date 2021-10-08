@@ -57,10 +57,16 @@ public class ListTasks extends Fragment {
 
         listView = (ListView) view.findViewById(R.id.listview);
         button = (Button) view.findViewById(R.id.button);
-        input = (EditText) view.findViewById(R.id.editTextTextPersonName2);
+        //input = (EditText) view.findViewById(R.id.editTextTextPersonName2);
         dropdown = (Spinner) view.findViewById(R.id.dropdown);
 
         tasksList = new ArrayList<>();
+
+        try{
+            tasksList = this.getArguments().getParcelableArrayList("Tasks List");
+        }
+        catch(Exception e){
+        }
         locations = this.getArguments().getParcelableArrayList("places");
 
         button.setOnClickListener(new View.OnClickListener() {
@@ -94,7 +100,7 @@ public class ListTasks extends Fragment {
                                        int arg2, long arg3) {
                 button.setEnabled(true);
                 if(arg2 != 0) {
-                    currentLocSelected = locations.get(arg2);
+                    currentLocSelected = locations.get(arg2 - 1);
                     System.out.println(currentLocSelected.getPlace_name());
                 }
                 else{
@@ -114,13 +120,18 @@ public class ListTasks extends Fragment {
         location_names.add("General Tasks");
         tasksForEachLocation.add(new ArrayList<String>());
         arrayAdaptersForEachLocation.add(new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1,tasksForEachLocation.get(0)));
-        for(int i = 0; i < locations.size(); i++){
-            location_names.add(locations.get(i).getPlace_name());
-            //creates new arraylist for each location, and new array adapter to go along with it
-            tasksForEachLocation.add(new ArrayList<String>());
-            arrayAdaptersForEachLocation.add(new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1,tasksForEachLocation.get(i + 1)));
-        }
+        try{
+            for(int i = 0; i < locations.size(); i++){
+                location_names.add(locations.get(i).getPlace_name());
+                //creates new arraylist for each location, and new array adapter to go along with it
+                tasksForEachLocation.add(new ArrayList<String>());
+                arrayAdaptersForEachLocation.add(new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1,tasksForEachLocation.get(i + 1)));
+            }
 
+        }
+        catch (Exception e){
+
+        }
     }
 
     private void setUpListViewListener() {
@@ -147,17 +158,19 @@ public class ListTasks extends Fragment {
     }
 
     private void filterThroughTasks(){
-        for(Tasks t: tasksList){
-            if(t.getListName().equals("General Tasks")){
-                tasksForEachLocation.get(0).add(t.getTaskName());
+        if(tasksList != null){
+            for(Tasks t: tasksList){
+                if(t.getListName().equals("General Tasks")){
+                    tasksForEachLocation.get(0).add(t.getTaskName());
+                }
+                else{
+                    int index = location_names.indexOf(t.getListName());
+                    tasksForEachLocation.get(index).add(t.getTaskName());
+                }
             }
-            else{
-                int index = location_names.indexOf(t.getListName());
-                tasksForEachLocation.get(index).add(t.getTaskName());
+            for(ArrayAdapter<String> arrayAdapter: arrayAdaptersForEachLocation){
+                arrayAdapter.notifyDataSetChanged();
             }
-        }
-        for(ArrayAdapter<String> arrayAdapter: arrayAdaptersForEachLocation){
-            arrayAdapter.notifyDataSetChanged();
         }
     }
 
@@ -170,9 +183,13 @@ public class ListTasks extends Fragment {
 
         bundle.putString("List Name", listName);
         bundle.putParcelableArrayList("Tasks List", tasksList);
+        bundle.putParcelableArrayList("Locations", locations);
         childFragment.setArguments(bundle);
-        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        transaction.replace(R.id.list_tasks, childFragment).commit();
+
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_activity, childFragment).commit();
+
+//        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+//        transaction.replace(R.id.main_activity, childFragment).commit();
 
 //        String itemText = input.getText().toString();
 //

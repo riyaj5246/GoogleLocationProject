@@ -15,6 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.BreakIterator;
@@ -29,7 +31,9 @@ import java.util.Calendar;
 public class AddingTaskFragment extends Fragment {
 
     private EditText addTaskTitle, addTaskDescription, taskTime, taskDate;
+    private Spinner locationDropdown;
     private ArrayList<Tasks> allTasks;
+    private ArrayList<Places> allLocations;
     private Button addTask;
     private String taskList;
     int mYear, mMonth, mDay;
@@ -67,7 +71,9 @@ public class AddingTaskFragment extends Fragment {
         addTask = screenview.findViewById(R.id.addTask);
         taskDate = screenview.findViewById(R.id.taskDate);
         taskList = this.getArguments().getString("List Name");
+        allTasks = new ArrayList<>();
         allTasks = this.getArguments().getParcelableArrayList("Tasks List");
+        allLocations = this.getArguments().getParcelableArrayList("places");
 
         taskDate.setOnTouchListener((view, motionEvent) -> {
             if(motionEvent.getAction() == MotionEvent.ACTION_UP) {
@@ -106,22 +112,18 @@ public class AddingTaskFragment extends Fragment {
 
         addTask.setOnClickListener(view ->{
             if(validateFields()){
-                Tasks newTask = new Tasks(addTaskTitle.getText().toString(), addTaskDescription.getText().toString(), taskTime.getText().toString(), "General Activity", taskDate.getText().toString());
+                Tasks newTask = new Tasks(addTaskTitle.getText().toString(), addTaskDescription.getText().toString(), taskTime.getText().toString(), taskList, taskDate.getText().toString());
                 allTasks.add(newTask);
                 clearAllFields();
-                getActivity().getFragmentManager().popBackStack();
 
-//                //TODO: FIGURE OUT HOW TO CLOSE OUT THE CHILD FRAGMENT
-//                FragmentManager fm = getFragmentManager();
-//                for (Fragment frag : fm.getFragments()) {
-//                    if (frag.isVisible()) {
-//                        FragmentManager childFm = frag.getChildFragmentManager();
-//                        if (childFm.getBackStackEntryCount() > 0) {
-//                            childFm.popBackStack();
-//                            return;
-//                        }
-//                    }
-//                }
+                Fragment backToChecklist = new ListTasks();
+                Bundle bundle = new Bundle();
+                bundle.putParcelableArrayList("Tasks List", allTasks);
+                bundle.putParcelableArrayList("places", allLocations);
+                backToChecklist.setArguments(bundle);
+
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.main_activity, backToChecklist).commit();
+
             }
         });
 

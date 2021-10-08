@@ -32,6 +32,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 
 public class MainActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -43,6 +45,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     FloatingActionButton addLocButton, confirmLoc, deleteLoc;
     EditText locNameText;
     MarkerOptions selectedLoc;
+    private String fileName = "locationData";
 
     Button openFragment;
 
@@ -158,6 +161,21 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         openFragment.setOnClickListener(view ->{
             Bundle bundle = new Bundle();
             bundle.putParcelableArrayList("places", locations);
+
+            //TODO: Get internal storage working
+//            for(Places location: locations){
+//                try {
+//                    FileOutputStream fOut = openFileOutput(fileName,MODE_WORLD_READABLE);
+//                    fOut.write(location.getPlace_name().getBytes());
+//                    fOut.write(location.getCoordinates().toString().getBytes());
+//                    fOut.close();
+//                    Toast.makeText(getBaseContext(),"file saved",Toast.LENGTH_SHORT).show();
+//                    System.out.println("file was saved");
+//                }
+//                catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
 
             openFragment.setVisibility(View.GONE);
             Fragment fragment = new ListTasks();

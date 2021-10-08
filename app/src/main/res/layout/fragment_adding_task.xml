@@ -13,13 +13,6 @@
         android:paddingBottom="50dp"
         android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
-            android:scaleType="centerCrop" />
-
         <TextView
             fontPath="fonts/nunito_extra_bold.ttf"
             android:layout_width="wrap_content"
@@ -31,24 +24,31 @@
             android:textSize="22sp"
             tools:ignore="MissingPrefix" />
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:scaleType="centerCrop" />
+
         <TextView
             fontPath="fonts/nunito_light.ttf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
+            android:alpha="0.8"
             android:text="Fill the details below to add a task into your TODO"
             android:textAlignment="center"
             android:textColor="@android:color/black"
-            android:alpha="0.8"
             android:textSize="18sp"
             tools:ignore="MissingPrefix" />
 
         <TextView
-            android:layout_marginLeft="3dp"
             fontPath="fonts/nunito_light.ttf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="3dp"
             android:layout_marginTop="30dp"
             android:text="Task title"
             tools:ignore="MissingPrefix" />
@@ -128,12 +128,29 @@
             android:textSize="14sp"
             tools:ignore="MissingPrefix" />
 
+<!--        <TextView-->
+<!--            android:id="@+id/textView"-->
+<!--            fontPath="fonts/nunito_light.ttf"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginLeft="3dp"-->
+<!--            android:layout_marginTop="30dp"-->
+<!--            android:text="Checklist:"-->
+<!--            tools:ignore="MissingPrefix" />-->
+
+<!--        <Spinner-->
+<!--            android:id="@+id/locationDropdown"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:minHeight="48dp"-->
+<!--            tools:ignore="SpeakableTextPresentCheck" />-->
+
         <Button
+            android:id="@+id/addTask"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/addTask"
-            android:text="Add task"
-            android:layout_marginTop="40dp" />
+            android:layout_marginTop="40dp"
+            android:text="Add task" />
 
     </LinearLayout>
 </ScrollView>
