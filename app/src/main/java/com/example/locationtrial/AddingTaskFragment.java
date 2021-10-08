@@ -7,6 +7,7 @@ import android.app.TimePickerDialog;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -17,6 +18,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import java.text.BreakIterator;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
@@ -27,6 +29,7 @@ import java.util.Calendar;
 public class AddingTaskFragment extends Fragment {
 
     private EditText addTaskTitle, addTaskDescription, taskTime, taskDate;
+    private ArrayList<Tasks> allTasks;
     private Button addTask;
     private String taskList;
     int mYear, mMonth, mDay;
@@ -64,6 +67,7 @@ public class AddingTaskFragment extends Fragment {
         addTask = screenview.findViewById(R.id.addTask);
         taskDate = screenview.findViewById(R.id.taskDate);
         taskList = this.getArguments().getString("List Name");
+        allTasks = this.getArguments().getParcelableArrayList("Tasks List");
 
         taskDate.setOnTouchListener((view, motionEvent) -> {
             if(motionEvent.getAction() == MotionEvent.ACTION_UP) {
@@ -103,6 +107,21 @@ public class AddingTaskFragment extends Fragment {
         addTask.setOnClickListener(view ->{
             if(validateFields()){
                 Tasks newTask = new Tasks(addTaskTitle.getText().toString(), addTaskDescription.getText().toString(), taskTime.getText().toString(), "General Activity", taskDate.getText().toString());
+                allTasks.add(newTask);
+                clearAllFields();
+                getActivity().getFragmentManager().popBackStack();
+
+//                //TODO: FIGURE OUT HOW TO CLOSE OUT THE CHILD FRAGMENT
+//                FragmentManager fm = getFragmentManager();
+//                for (Fragment frag : fm.getFragments()) {
+//                    if (frag.isVisible()) {
+//                        FragmentManager childFm = frag.getChildFragmentManager();
+//                        if (childFm.getBackStackEntryCount() > 0) {
+//                            childFm.popBackStack();
+//                            return;
+//                        }
+//                    }
+//                }
             }
         });
 
@@ -126,6 +145,13 @@ public class AddingTaskFragment extends Fragment {
         else {
             return true;
         }
+    }
+
+    private void clearAllFields(){
+        addTaskTitle.setText("");
+        addTaskDescription.setText("");
+        taskDate.setText("");
+        taskTime.setText("");
     }
 
 

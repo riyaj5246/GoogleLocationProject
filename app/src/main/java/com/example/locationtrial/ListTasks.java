@@ -24,8 +24,7 @@ import java.util.ArrayList;
 
 public class ListTasks extends Fragment {
 
-    private ArrayList<String> items;
-    private ArrayAdapter<String> itemsAdapter;
+    public ArrayList<Tasks> tasksList;
 
     private ArrayList<ArrayList<String>> tasksForEachLocation;
     private ArrayList<ArrayAdapter<String>> arrayAdaptersForEachLocation;
@@ -61,6 +60,7 @@ public class ListTasks extends Fragment {
         input = (EditText) view.findViewById(R.id.editTextTextPersonName2);
         dropdown = (Spinner) view.findViewById(R.id.dropdown);
 
+        tasksList = new ArrayList<>();
         locations = this.getArguments().getParcelableArrayList("places");
 
         button.setOnClickListener(new View.OnClickListener() {
@@ -73,9 +73,6 @@ public class ListTasks extends Fragment {
         tasksForEachLocation = new ArrayList<ArrayList<String>>();
         arrayAdaptersForEachLocation = new ArrayList<ArrayAdapter<String>>();
 
-        //items = new ArrayList<>();
-        //itemsAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, items);
-        listView.setAdapter(itemsAdapter);
         setUpListViewListener();
 
         location_names = new ArrayList<>();
@@ -83,6 +80,7 @@ public class ListTasks extends Fragment {
         locationsAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, location_names);
         dropdown.setAdapter(locationsAdapter);
 
+        filterThroughTasks();
         manageDropDownSelections();
 
         return view;
@@ -148,13 +146,30 @@ public class ListTasks extends Fragment {
         });
     }
 
+    private void filterThroughTasks(){
+        for(Tasks t: tasksList){
+            if(t.getListName().equals("General Tasks")){
+                tasksForEachLocation.get(0).add(t.getTaskName());
+            }
+            else{
+                int index = location_names.indexOf(t.getListName());
+                tasksForEachLocation.get(index).add(t.getTaskName());
+            }
+        }
+        for(ArrayAdapter<String> arrayAdapter: arrayAdaptersForEachLocation){
+            arrayAdapter.notifyDataSetChanged();
+        }
+    }
+
     private void addItem(View view) {
 
         Fragment childFragment = new AddingTaskFragment();
         Bundle bundle = new Bundle();
         TextView myText = (TextView) dropdown.getSelectedView();
         String listName = myText.getText().toString();
+
         bundle.putString("List Name", listName);
+        bundle.putParcelableArrayList("Tasks List", tasksList);
         childFragment.setArguments(bundle);
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.replace(R.id.list_tasks, childFragment).commit();
