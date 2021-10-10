@@ -42,6 +42,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class MainActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -52,25 +53,26 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     FloatingActionButton addLocButton, confirmLoc, deleteLoc;
     EditText locNameText;
     MarkerOptions selectedLoc;
-    private String fileName = "locationData";
 
     Button save;
     Button load;
     Button openFragment;
+
+    int randCounter = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        save = (Button) findViewById(R.id.saveBtn);
-        load = (Button) findViewById(R.id.loadBtn);
+        save = findViewById(R.id.saveBtn);
+        load = findViewById(R.id.loadBtn);
 
-        addLocButton = (FloatingActionButton) findViewById(R.id.addLocBtn);
-        locNameText = (EditText) findViewById(R.id.locNameTextField);
-        confirmLoc = (FloatingActionButton) findViewById(R.id.confirmLoc);
-        deleteLoc = (FloatingActionButton) findViewById(R.id.deleteLoc);
-        openFragment = (Button) findViewById(R.id.tochecklist);
+        addLocButton = findViewById(R.id.addLocBtn);
+        locNameText = findViewById(R.id.locNameTextField);
+        confirmLoc = findViewById(R.id.confirmLoc);
+        deleteLoc = findViewById(R.id.deleteLoc);
+        openFragment = findViewById(R.id.tochecklist);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         fetchLastLocation();
     }
@@ -78,13 +80,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     private void fetchLastLocation() {
         System.out.println("getting here");
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             System.out.println("here pt two");
             ActivityCompat.requestPermissions(this, new String[]
                     {Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE);
@@ -137,7 +132,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 selectedLoc = new MarkerOptions().position(point);
                 googleMap.addMarker(selectedLoc);
                 addLocButton.setVisibility(View.VISIBLE);
+                confirmLoc.setVisibility(View.INVISIBLE);
                 deleteLoc.setVisibility(View.VISIBLE);
+                locNameText.setVisibility(View.INVISIBLE);
             }
         });
 
@@ -150,7 +147,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
         confirmLoc.setOnClickListener(view -> {
             LatLng newPos = selectedLoc.getPosition();
-            String newName = locNameText.getText().toString();
+            //TODO: FIX stupid text field error --> counter as temporary replacement
+            String newName = "Loc" + randCounter; //locNameText.getText().toString();
+            randCounter++;
             locations.add(new Places(newPos, newName));
             confirmLoc.setVisibility(View.INVISIBLE);
             deleteLoc.setVisibility(View.INVISIBLE);
@@ -221,6 +220,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
             googleMap.addMarker(markerOptions);
         }
+        getClosestLocation();
     }
 
     public ArrayList<Places> getPlaces(){
@@ -270,7 +270,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             while(newString.length() > 0){
                 System.out.println(newString.indexOf(" || "));
                 String location = newString.substring(0, newString.indexOf(" || "));
-                Toast.makeText(this, location, Toast.LENGTH_SHORT).show();
+              //  Toast.makeText(this, location, Toast.LENGTH_SHORT).show();
                 locations.add(getLocFromString(location));
                 newString = newString.substring(newString.indexOf(" || ") + 3);
             }
@@ -289,6 +289,28 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
         LatLng x = new LatLng(Double.parseDouble(placeLat), Double.parseDouble(placeLong));
         return new Places(x, placeName);
+    }
+
+    private void getClosestLocation(){
+        if(locations.size() > 0){
+            ArrayList<Float> distancesFromCurrent = new ArrayList<>();
+            for(Places p: locations){
+                float[] results = new float[1];
+                Location.distanceBetween(currentLocation.getLatitude(), currentLocation.getLongitude(),
+                        p.getCoordinates().latitude, p.getCoordinates().longitude,
+                        results);
+                distancesFromCurrent.add(results[0]);
+            }
+            float leastDistance = distancesFromCurrent.get(0);
+            for(int i = 0; i < distancesFromCurrent.size(); i++){
+                if(distancesFromCurrent.get(i) < leastDistance){
+                    leastDistance = distancesFromCurrent.get(i);
+                }
+            }
+            Places closestLocation = locations.get(distancesFromCurrent.indexOf(leastDistance));
+            Toast.makeText(this, "Closest: " + closestLocation.getPlace_name(), Toast.LENGTH_SHORT).show();
+        }
+
     }
 
 }
