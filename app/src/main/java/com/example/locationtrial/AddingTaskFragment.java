@@ -1,11 +1,18 @@
 package com.example.locationtrial;
 
+import static androidx.core.content.ContextCompat.getSystemService;
+
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.TimePickerDialog;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -80,6 +87,11 @@ public class AddingTaskFragment extends Fragment {
             System.out.println(p.getPlace_name());
         }
 
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            NotificationChannel channel = new NotificationChannel("My notification", "My notification", NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationManager manager = (NotificationManager) getActivity().getSystemService(getActivity().NOTIFICATION_SERVICE);
+            manager.createNotificationChannel(channel);
+        }
         taskDate.setOnTouchListener((view, motionEvent) -> {
             if(motionEvent.getAction() == MotionEvent.ACTION_UP) {
                 final Calendar c = Calendar.getInstance();
@@ -121,6 +133,9 @@ public class AddingTaskFragment extends Fragment {
                 allTasks.add(newTask);
                 clearAllFields();
 
+                System.out.println("getting to add task");
+                createNotification();
+
                 Fragment backToChecklist = new ListTasks();
                 Bundle bundle = new Bundle();
                 bundle.putParcelableArrayList("Tasks List", allTasks);
@@ -134,6 +149,20 @@ public class AddingTaskFragment extends Fragment {
 
         // Inflate the layout for this fragment
         return screenview;
+    }
+
+    private void createNotification() {
+
+        //TODO: GET Notifications working
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(getActivity(), "My Notification");
+        builder.setContentTitle("New Task");
+        builder.setContentText("Message");
+        builder.setSmallIcon(R.drawable.ic_launcher_background);
+        builder.setAutoCancel(true);
+
+        NotificationManagerCompat managerCompact = NotificationManagerCompat.from(getActivity());
+        managerCompact.notify(1, builder.build());
+        System.out.println("created notification");
     }
 
     public boolean validateFields() {

@@ -154,15 +154,15 @@ public class ListTasks extends Fragment {
                     index = 0;
                 }
                 String taskName = tasksForEachLocation.get(index).get(i);
+                tasksForEachLocation.get(index).remove(i);
+                arrayAdaptersForEachLocation.get(index).notifyDataSetChanged();
+
                 for(Tasks t: tasksList){
                     if(t.getTaskName().equals(taskName)){
                         tasksList.remove(t);
                         break;
                     }
                 }
-                tasksForEachLocation.get(index).remove(i);
-                arrayAdaptersForEachLocation.get(index).notifyDataSetChanged();
-
                 return true;
             }
         });

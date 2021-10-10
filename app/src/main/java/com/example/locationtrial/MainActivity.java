@@ -1,5 +1,7 @@
 package com.example.locationtrial;
 
+import static androidx.core.content.ContextCompat.getSystemService;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -9,6 +11,7 @@ import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
 import android.app.FragmentTransaction;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -171,21 +174,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             Bundle bundle = new Bundle();
             bundle.putParcelableArrayList("places", locations);
 
-            //TODO: Get internal storage working
-//            for(Places location: locations){
-//                try {
-//                    FileOutputStream fOut = openFileOutput(fileName,MODE_WORLD_READABLE);
-//                    fOut.write(location.getPlace_name().getBytes());
-//                    fOut.write(location.getCoordinates().toString().getBytes());
-//                    fOut.close();
-//                    Toast.makeText(getBaseContext(),"file saved",Toast.LENGTH_SHORT).show();
-//                    System.out.println("file was saved");
-//                }
-//                catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//            }
-
             addLocButton.setVisibility(View.GONE);
             deleteLoc.setVisibility(View.GONE);
             confirmLoc.setVisibility(View.GONE);
@@ -295,14 +283,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private Places getLocFromString(String loc){
-        System.out.println(loc);
         String placeName = loc.substring(0, loc.indexOf(": ") );
         String placeLat = loc.substring(loc.indexOf(": ") + 2, loc.indexOf(", "));
         String placeLong = (loc.substring(loc.indexOf(", ") + 2));
-
-        System.out.println(placeName);
-        System.out.println(placeLat);
-        System.out.println(placeLong);
 
         LatLng x = new LatLng(Double.parseDouble(placeLat), Double.parseDouble(placeLong));
         return new Places(x, placeName);
