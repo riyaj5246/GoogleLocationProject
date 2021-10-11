@@ -15,11 +15,16 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 
 public class ListTasks extends Fragment {
@@ -37,6 +42,10 @@ public class ListTasks extends Fragment {
     private ArrayList<Places> locations;
     private ArrayList<String> location_names;
     private ArrayAdapter<String> locationsAdapter;
+
+    private ArrayList<HashMap<String, String>> task_details = new ArrayList<>();
+    private ArrayList<ArrayList<HashMap<String, String>>> listItemsForEachLocation = new ArrayList<>();
+    private ArrayList<SimpleAdapter> adaptersForEachLocation = new ArrayList<>();
 
     public ListTasks() {
         // Required empty public constructor
@@ -57,7 +66,6 @@ public class ListTasks extends Fragment {
 
         listView = (ListView) view.findViewById(R.id.listview);
         button = (Button) view.findViewById(R.id.button);
-        //input = (EditText) view.findViewById(R.id.editTextTextPersonName2);
         dropdown = (Spinner) view.findViewById(R.id.dropdown);
 
         tasksList = new ArrayList<>();
@@ -70,9 +78,7 @@ public class ListTasks extends Fragment {
         }
         catch(Exception e){
         }
-//        for (Places x: locations){
-//            System.out.println(x.getPlace_name());
-//        }
+
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,15 +90,41 @@ public class ListTasks extends Fragment {
         tasksForEachLocation = new ArrayList<ArrayList<String>>();
         arrayAdaptersForEachLocation = new ArrayList<ArrayAdapter<String>>();
 
+        int counter = 0;
+
+
         setUpListViewListener();
 
         location_names = new ArrayList<>();
         getLocations();
         locationsAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, location_names);
         dropdown.setAdapter(locationsAdapter);
-
         filterThroughTasks();
+
+//        for(SimpleAdapter adapter: adaptersForEachLocation){
+//            adapter = new SimpleAdapter(getActivity(),
+//                    listItemsForEachLocation.get(counter),
+//                    R.layout.list_item,
+//                    new String[]{"First Line", "Second Line"},
+//                    new int[]{R.id.text1, R.id.text2});
+//            counter++;
+//        }
+
+        int listCounter = 0;
+        for(HashMap<String, String> lists: task_details){
+            Iterator it = lists.entrySet().iterator();
+            while(it.hasNext()){
+                HashMap<String, String> resultsMap = new HashMap<>();
+                Map.Entry pair = (Map.Entry) it.next();
+                resultsMap.put("First Line", pair.getKey().toString());
+                resultsMap.put("Second Line", pair.getValue().toString());
+                listItemsForEachLocation.get(listCounter).add(resultsMap);
+            }
+            listCounter++;
+        }
+
         manageDropDownSelections();
+
 
         return view;
     }
@@ -111,7 +143,8 @@ public class ListTasks extends Fragment {
                 else{
                     currentLocSelected = null;
                 }
-                listView.setAdapter(arrayAdaptersForEachLocation.get(arg2));
+              //  listView.setAdapter(arrayAdaptersForEachLocation.get(arg2));
+                listView.setAdapter(adaptersForEachLocation.get(arg2));
             }
 
             @Override
@@ -123,6 +156,13 @@ public class ListTasks extends Fragment {
 
     private void getLocations() {
         location_names.add("General Tasks");
+        task_details.add(new HashMap<>());
+        listItemsForEachLocation.add(new ArrayList<>());
+        adaptersForEachLocation.add(new SimpleAdapter(getActivity(),
+                listItemsForEachLocation.get(0),
+                R.layout.list_item,
+                new String[]{"First Line", "Second Line"},
+                new int[]{R.id.text1, R.id.text2}));
         tasksForEachLocation.add(new ArrayList<String>());
         arrayAdaptersForEachLocation.add(new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1,tasksForEachLocation.get(0)));
         try{
@@ -131,6 +171,14 @@ public class ListTasks extends Fragment {
                 //creates new arraylist for each location, and new array adapter to go along with it
                 tasksForEachLocation.add(new ArrayList<String>());
                 arrayAdaptersForEachLocation.add(new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1,tasksForEachLocation.get(i + 1)));
+
+                task_details.add(new HashMap<>());
+                listItemsForEachLocation.add(new ArrayList<>());
+                adaptersForEachLocation.add(new SimpleAdapter(getActivity(),
+                        listItemsForEachLocation.get(i + 1),
+                        R.layout.list_item,
+                        new String[]{"First Line", "Second Line"},
+                        new int[]{R.id.text1, R.id.text2}));
             }
 
         }
@@ -153,7 +201,14 @@ public class ListTasks extends Fragment {
                 else{
                     index = 0;
                 }
-                String taskName = tasksForEachLocation.get(index).get(i);
+               // String taskName = tasksForEachLocation.get(index).get(i);
+                String taskName = listItemsForEachLocation.get(index).get(i).get("First Line");
+                System.out.println(taskName);
+
+                task_details.get(index).remove(i);
+                listItemsForEachLocation.get(index).remove(i);
+                adaptersForEachLocation.get(index).notifyDataSetChanged();
+
                 tasksForEachLocation.get(index).remove(i);
                 arrayAdaptersForEachLocation.get(index).notifyDataSetChanged();
 
@@ -172,16 +227,20 @@ public class ListTasks extends Fragment {
         if(tasksList != null){
             for(Tasks t: tasksList){
                 if(t.getListName().equals("General Tasks")){
+                    task_details.get(0).put(t.getTaskName(), t.getTaskSubheading());
                     tasksForEachLocation.get(0).add(t.getTaskName());
                 }
                 else{
                     int index = location_names.indexOf(t.getListName());
                     tasksForEachLocation.get(index).add(t.getTaskName());
+                    task_details.get(index).put(t.getTaskName(), t.getTaskSubheading());
                 }
             }
             for(ArrayAdapter<String> arrayAdapter: arrayAdaptersForEachLocation){
                 arrayAdapter.notifyDataSetChanged();
             }
+
+
         }
     }
 

@@ -6,15 +6,19 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
 import android.app.FragmentTransaction;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -73,6 +77,13 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         confirmLoc = findViewById(R.id.confirmLoc);
         deleteLoc = findViewById(R.id.deleteLoc);
         openFragment = findViewById(R.id.tochecklist);
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            NotificationChannel channel = new NotificationChannel("My notification", "My notification", NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(channel);
+        }
+
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         fetchLastLocation();
     }
@@ -151,6 +162,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             String newName = "Loc" + randCounter; //locNameText.getText().toString();
             randCounter++;
             locations.add(new Places(newPos, newName));
+            createNotification("New Place Added", "hi");
             confirmLoc.setVisibility(View.INVISIBLE);
             deleteLoc.setVisibility(View.INVISIBLE);
             locNameText.setVisibility(View.INVISIBLE);
@@ -311,6 +323,20 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             Toast.makeText(this, "Closest: " + closestLocation.getPlace_name(), Toast.LENGTH_SHORT).show();
         }
 
+    }
+
+    private void createNotification(String title, String message) {
+
+        //TODO: GET Notifications working
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(MainActivity.this, "My Notification");
+        builder.setContentTitle(title);
+        builder.setContentText(message);
+        builder.setSmallIcon(R.drawable.ic_launcher_background);
+        builder.setAutoCancel(true);
+
+        NotificationManagerCompat managerCompact = NotificationManagerCompat.from(MainActivity.this);
+        managerCompact.notify(1, builder.build());
+        System.out.println("created notification");
     }
 
 }

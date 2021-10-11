@@ -39,6 +39,10 @@ public class Tasks implements Parcelable {
         return taskDescription;
     }
 
+    public String getTaskSubheading(){
+        return (taskTime + "    " + taskDate + "    " + taskDescription);
+    }
+
     protected Tasks(Parcel in) {
         taskName = in.readString();
         taskDescription = in.readString();

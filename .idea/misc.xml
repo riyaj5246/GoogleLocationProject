@@ -11,6 +11,7 @@
         <entry key="app/src/main/res/layout/fragment_creating_new_task_list_dialog.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_creating_new_task_list_dialog_item.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_notifs_list.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/list_item.xml" value="0.1743659420289855" />
         <entry key="app/src/main/res/layout/list_tasks.xml" value="0.25" />
       </map>
     </option>
