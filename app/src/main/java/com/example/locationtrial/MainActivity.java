@@ -377,7 +377,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
     //would not be used in real life; for the purpose of demo-ing changing location
     public void demoChangingLocation(){
-        Toast.makeText(MainActivity.this, "Changing Location!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(MainActivity.this, "Manually changing current phone location", Toast.LENGTH_SHORT).show();
         //need to think through how I'm changing loc
         for (Places p:locations){
             LatLng currentCoordinates = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
