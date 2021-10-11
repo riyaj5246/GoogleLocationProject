@@ -27,8 +27,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.BreakIterator;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -87,11 +90,7 @@ public class AddingTaskFragment extends Fragment {
             System.out.println(p.getPlace_name());
         }
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            NotificationChannel channel = new NotificationChannel("My notification", "My notification", NotificationManager.IMPORTANCE_DEFAULT);
-            NotificationManager manager = (NotificationManager) getActivity().getSystemService(getActivity().NOTIFICATION_SERVICE);
-            manager.createNotificationChannel(channel);
-        }
+
         taskDate.setOnTouchListener((view, motionEvent) -> {
             if(motionEvent.getAction() == MotionEvent.ACTION_UP) {
                 final Calendar c = Calendar.getInstance();
@@ -129,12 +128,12 @@ public class AddingTaskFragment extends Fragment {
 
         addTask.setOnClickListener(view ->{
             if(validateFields()){
+
                 Tasks newTask = new Tasks(addTaskTitle.getText().toString(), addTaskDescription.getText().toString(), taskTime.getText().toString(), taskList, taskDate.getText().toString());
                 allTasks.add(newTask);
                 clearAllFields();
 
                 System.out.println("getting to add task");
-                createNotification();
 
                 Fragment backToChecklist = new ListTasks();
                 Bundle bundle = new Bundle();
@@ -151,19 +150,7 @@ public class AddingTaskFragment extends Fragment {
         return screenview;
     }
 
-    private void createNotification() {
 
-        //TODO: GET Notifications working
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(getActivity(), "My Notification");
-        builder.setContentTitle("New Task");
-        builder.setContentText("Message");
-        builder.setSmallIcon(R.drawable.ic_launcher_background);
-        builder.setAutoCancel(true);
-
-        NotificationManagerCompat managerCompact = NotificationManagerCompat.from(getActivity());
-        managerCompact.notify(1, builder.build());
-        System.out.println("created notification");
-    }
 
     public boolean validateFields() {
         for(Tasks t: allTasks){
@@ -195,7 +182,6 @@ public class AddingTaskFragment extends Fragment {
         taskDate.setText("");
         taskTime.setText("");
     }
-
 
 
     @Override
