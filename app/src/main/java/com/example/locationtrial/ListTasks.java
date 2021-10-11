@@ -37,6 +37,7 @@ public class ListTasks extends Fragment {
 
     private ListView listView;
     private Button button;
+    private Button changeLocDemoBtn;
     private EditText input;
     private Spinner dropdown;
     private ArrayList<Places> locations;
@@ -67,6 +68,7 @@ public class ListTasks extends Fragment {
         listView = (ListView) view.findViewById(R.id.listview);
         button = (Button) view.findViewById(R.id.button);
         dropdown = (Spinner) view.findViewById(R.id.dropdown);
+        changeLocDemoBtn = view.findViewById(R.id.changeLocBtn);
 
         tasksList = new ArrayList<>();
         locations = new ArrayList<>();
@@ -90,9 +92,6 @@ public class ListTasks extends Fragment {
         tasksForEachLocation = new ArrayList<ArrayList<String>>();
         arrayAdaptersForEachLocation = new ArrayList<ArrayAdapter<String>>();
 
-        int counter = 0;
-
-
         setUpListViewListener();
 
         location_names = new ArrayList<>();
@@ -100,15 +99,6 @@ public class ListTasks extends Fragment {
         locationsAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, location_names);
         dropdown.setAdapter(locationsAdapter);
         filterThroughTasks();
-
-//        for(SimpleAdapter adapter: adaptersForEachLocation){
-//            adapter = new SimpleAdapter(getActivity(),
-//                    listItemsForEachLocation.get(counter),
-//                    R.layout.list_item,
-//                    new String[]{"First Line", "Second Line"},
-//                    new int[]{R.id.text1, R.id.text2});
-//            counter++;
-//        }
 
         int listCounter = 0;
         for(HashMap<String, String> lists: task_details){
@@ -125,6 +115,12 @@ public class ListTasks extends Fragment {
 
         manageDropDownSelections();
 
+        changeLocDemoBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((MainActivity) getActivity()).demoChangingLocation();
+            }
+        });
 
         return view;
     }

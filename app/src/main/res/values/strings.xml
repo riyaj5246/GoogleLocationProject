@@ -18,5 +18,6 @@
     <string name="task_title">Task title</string>
     <string name="task_description">Task description</string>
     <string name="add_task">Add task</string>
+    <string name="loc">loc</string>
 
 </resources>

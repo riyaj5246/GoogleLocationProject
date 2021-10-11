@@ -51,6 +51,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Random;
 
 public class MainActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -346,7 +347,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 nearestLocation = newclosestLocation;
                 sendNotification("You're reaching " + nearestLocation.getPlace_name(), "Open your productivity app to see the tasks you have to complete at " + nearestLocation.getPlace_name() + "!");
             }
-            Toast.makeText(this, "Closest: " + newclosestLocation.getPlace_name(), Toast.LENGTH_SHORT).show();
+           // Toast.makeText(this, "Closest: " + newclosestLocation.getPlace_name(), Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -372,6 +373,24 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher));
         Notification notification = builder.build();
         notificationManager.notify(new Random().nextInt(), notification);
+    }
+
+    //would not be used in real life; for the purpose of demo-ing changing location
+    public void demoChangingLocation(){
+        Toast.makeText(MainActivity.this, "Changing Location!", Toast.LENGTH_SHORT).show();
+        //need to think through how I'm changing loc
+        for (Places p:locations){
+            LatLng currentCoordinates = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+            LatLng pCoordinates = p.getCoordinates();
+            if(!pCoordinates.equals(currentCoordinates)){
+                Location location = new Location("Test");
+                location.setLatitude(p.getCoordinates().latitude);
+                location.setLongitude(p.getCoordinates().longitude);
+                location.setTime(new Date().getTime()); //Set time as current Date
+                currentLocation = location;
+                break;
+            }
+        }
     }
 
 }
