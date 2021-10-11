@@ -92,8 +92,6 @@ public class ListTasks extends Fragment {
         tasksForEachLocation = new ArrayList<ArrayList<String>>();
         arrayAdaptersForEachLocation = new ArrayList<ArrayAdapter<String>>();
 
-        setUpListViewListener();
-
         location_names = new ArrayList<>();
         getLocations();
         locationsAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_dropdown_item, location_names);
@@ -114,6 +112,7 @@ public class ListTasks extends Fragment {
         }
 
         manageDropDownSelections();
+        setUpListViewListener();
 
         changeLocDemoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -188,7 +187,6 @@ public class ListTasks extends Fragment {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Context context = getActivity().getApplicationContext();
-                Toast.makeText(context, "Item Completed!", Toast.LENGTH_LONG).show();
 
                 int index;
                 if(currentLocSelected != null){
@@ -198,22 +196,26 @@ public class ListTasks extends Fragment {
                     index = 0;
                 }
                // String taskName = tasksForEachLocation.get(index).get(i);
-                String taskName = listItemsForEachLocation.get(index).get(i).get("First Line");
-                System.out.println(taskName);
+                if(listItemsForEachLocation.get(index).size() > 0){
+                    String taskName = listItemsForEachLocation.get(index).get(i).get("First Line");
+                    System.out.println(taskName);
 
-                task_details.get(index).remove(i);
-                listItemsForEachLocation.get(index).remove(i);
-                adaptersForEachLocation.get(index).notifyDataSetChanged();
+                    task_details.get(index).remove(i);
+                    listItemsForEachLocation.get(index).remove(i);
+                    adaptersForEachLocation.get(index).notifyDataSetChanged();
 
-                tasksForEachLocation.get(index).remove(i);
-                arrayAdaptersForEachLocation.get(index).notifyDataSetChanged();
+                    tasksForEachLocation.get(index).remove(i);
+                    arrayAdaptersForEachLocation.get(index).notifyDataSetChanged();
 
-                for(Tasks t: tasksList){
-                    if(t.getTaskName().equals(taskName)){
-                        tasksList.remove(t);
-                        break;
+                    for(Tasks t: tasksList){
+                        if(t.getTaskName().equals(taskName)){
+                            tasksList.remove(t);
+                            break;
+                        }
                     }
+                    Toast.makeText(context, "Item Completed!", Toast.LENGTH_LONG).show();
                 }
+
                 return true;
             }
         });
