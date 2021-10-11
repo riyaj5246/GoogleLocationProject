@@ -13,10 +13,13 @@ import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
 import android.app.FragmentTransaction;
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
@@ -47,6 +50,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 
 public class MainActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -78,11 +82,11 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         deleteLoc = findViewById(R.id.deleteLoc);
         openFragment = findViewById(R.id.tochecklist);
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            NotificationChannel channel = new NotificationChannel("My notification", "My notification", NotificationManager.IMPORTANCE_DEFAULT);
-            NotificationManager manager = getSystemService(NotificationManager.class);
-            manager.createNotificationChannel(channel);
-        }
+//        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+//            NotificationChannel channel = new NotificationChannel("My notification", "My notification", NotificationManager.IMPORTANCE_DEFAULT);
+//            NotificationManager manager = getSystemService(NotificationManager.class);
+//            manager.createNotificationChannel(channel);
+//        }
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         fetchLastLocation();
@@ -158,10 +162,10 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
         confirmLoc.setOnClickListener(view -> {
             LatLng newPos = selectedLoc.getPosition();
-            //TODO: FIX stupid text field error --> counter as temporary replacement
             String newName = locNameText.getText().toString();
             locations.add(new Places(newPos, newName));
-            createNotification("New Place Added", "hi");
+            sendNotification("New Place Added", newName);
+           // createNotification("New Place Added", "hi");
             confirmLoc.setVisibility(View.INVISIBLE);
             deleteLoc.setVisibility(View.INVISIBLE);
             locNameText.setVisibility(View.INVISIBLE);
@@ -326,18 +330,27 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-    private void createNotification(String title, String message) {
 
-        //TODO: GET Notifications working
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(MainActivity.this, "My Notification");
-        builder.setContentTitle(title);
-        builder.setContentText(message);
-        builder.setSmallIcon(R.drawable.ic_launcher_background);
-        builder.setAutoCancel(true);
-
-        NotificationManagerCompat managerCompact = NotificationManagerCompat.from(MainActivity.this);
-        managerCompact.notify(1, builder.build());
-        System.out.println("created notification");
+    private void sendNotification(String title, String content) {
+        String NOTIFICATION_CHANNEL_ID = "edmt_multiple_location";
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
+            NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "My notifications", NotificationManager.IMPORTANCE_DEFAULT);
+            notificationChannel.setDescription("Channel description");
+            notificationChannel.enableLights(true);
+            notificationChannel.setLightColor(Color.RED);
+            notificationChannel.setVibrationPattern(new long[] {0, 1000, 500, 1000});
+            notificationChannel.enableVibration(true);
+            notificationManager.createNotificationChannel(notificationChannel);
+        }
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
+        builder.setContentTitle(title)
+                .setContentText(content)
+                .setAutoCancel(false)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher));
+        Notification notification = builder.build();
+        notificationManager.notify(new Random().nextInt(), notification);
     }
 
 }
