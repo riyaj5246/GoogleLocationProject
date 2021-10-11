@@ -23,6 +23,7 @@ import android.graphics.Color;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -61,12 +62,31 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     FloatingActionButton addLocButton, confirmLoc, deleteLoc;
     EditText locNameText;
     MarkerOptions selectedLoc;
+    Places nearestLocation;
 
     Button save;
     Button load;
     Button openFragment;
 
-    int randCounter = 0;
+    Handler handler = new Handler();
+    Runnable runnable;
+    int delay = 4000; //10 seconds between method is called again
+
+    @Override
+    protected void onResume() {
+        handler.postDelayed(runnable = new Runnable() {
+            public void run() {
+                handler.postDelayed(runnable, delay);
+                getClosestLocation();
+            }
+        }, delay);
+        super.onResume();
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        //handler.removeCallbacks(runnable); //stop handler when activity not visible super.onPause();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,12 +101,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         confirmLoc = findViewById(R.id.confirmLoc);
         deleteLoc = findViewById(R.id.deleteLoc);
         openFragment = findViewById(R.id.tochecklist);
-
-//        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-//            NotificationChannel channel = new NotificationChannel("My notification", "My notification", NotificationManager.IMPORTANCE_DEFAULT);
-//            NotificationManager manager = getSystemService(NotificationManager.class);
-//            manager.createNotificationChannel(channel);
-//        }
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         fetchLastLocation();
@@ -237,7 +251,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
             googleMap.addMarker(markerOptions);
         }
-        getClosestLocation();
+        //getClosestLocation();
     }
 
     public ArrayList<Places> getPlaces(){
@@ -324,8 +338,15 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                     leastDistance = distancesFromCurrent.get(i);
                 }
             }
-            Places closestLocation = locations.get(distancesFromCurrent.indexOf(leastDistance));
-            Toast.makeText(this, "Closest: " + closestLocation.getPlace_name(), Toast.LENGTH_SHORT).show();
+            Places newclosestLocation = locations.get(distancesFromCurrent.indexOf(leastDistance));
+            if(nearestLocation == null){
+                nearestLocation = newclosestLocation;
+            }
+            if(!newclosestLocation.equals(nearestLocation)){
+                nearestLocation = newclosestLocation;
+                sendNotification("You're reaching " + nearestLocation.getPlace_name(), "Open your productivity app to see the tasks you have to complete at " + nearestLocation.getPlace_name() + "!");
+            }
+            Toast.makeText(this, "Closest: " + newclosestLocation.getPlace_name(), Toast.LENGTH_SHORT).show();
         }
 
     }
