@@ -2,16 +2,18 @@
 <ScrollView android:layout_height="match_parent"
     android:layout_width="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="#C9F8F3"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:paddingLeft="20dp"
-        android:paddingRight="20dp"
         android:paddingTop="30dp"
-        android:paddingBottom="50dp"
-        android:orientation="vertical">
+        android:paddingRight="20dp"
+        android:paddingBottom="50dp">
 
         <TextView
             fontPath="fonts/nunito_extra_bold.ttf"
@@ -38,7 +40,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
             android:alpha="0.8"
-            android:text="Fill the details below to add a task into your TODO"
+            android:text="@string/fill_the_details_below_to_add_a_task_into_your_todo"
             android:textAlignment="center"
             android:textColor="@android:color/black"
             android:textSize="18sp"
@@ -50,7 +52,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="3dp"
             android:layout_marginTop="30dp"
-            android:text="Task title"
+            android:text="@string/task_title"
             tools:ignore="MissingPrefix" />
 
         <EditText
@@ -66,12 +68,12 @@
             tools:ignore="MissingPrefix" />
 
         <TextView
-            android:layout_marginLeft="3dp"
             fontPath="fonts/nunito_light.ttf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="3dp"
             android:layout_marginTop="30dp"
-            android:text="Task description"
+            android:text="@string/task_description"
             tools:ignore="MissingPrefix" />
 
         <EditText
@@ -87,10 +89,10 @@
             tools:ignore="MissingPrefix" />
 
         <TextView
-            android:layout_marginLeft="3dp"
             fontPath="fonts/nunito_light.ttf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="3dp"
             android:layout_marginTop="30dp"
             android:text="Task date"
             tools:ignore="MissingPrefix" />
@@ -108,10 +110,10 @@
             tools:ignore="MissingPrefix" />
 
         <TextView
-            android:layout_marginLeft="3dp"
             fontPath="fonts/nunito_light.ttf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="3dp"
             android:layout_marginTop="30dp"
             android:text="Task time"
             tools:ignore="MissingPrefix" />
@@ -128,29 +130,31 @@
             android:textSize="14sp"
             tools:ignore="MissingPrefix" />
 
-<!--        <TextView-->
-<!--            android:id="@+id/textView"-->
-<!--            fontPath="fonts/nunito_light.ttf"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginLeft="3dp"-->
-<!--            android:layout_marginTop="30dp"-->
-<!--            android:text="Checklist:"-->
-<!--            tools:ignore="MissingPrefix" />-->
+        <!--        <TextView-->
+        <!--            android:id="@+id/textView"-->
+        <!--            fontPath="fonts/nunito_light.ttf"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginLeft="3dp"-->
+        <!--            android:layout_marginTop="30dp"-->
+        <!--            android:text="Checklist:"-->
+        <!--            tools:ignore="MissingPrefix" />-->
 
-<!--        <Spinner-->
-<!--            android:id="@+id/locationDropdown"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:minHeight="48dp"-->
-<!--            tools:ignore="SpeakableTextPresentCheck" />-->
+        <!--        <Spinner-->
+        <!--            android:id="@+id/locationDropdown"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:minHeight="48dp"-->
+        <!--            tools:ignore="SpeakableTextPresentCheck" />-->
 
         <Button
             android:id="@+id/addTask"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
-            android:text="Add task" />
+            android:background="#024E4D"
+            android:text="@string/add_task"
+            android:textColor="#FFFFFF" />
 
     </LinearLayout>
 </ScrollView>

@@ -22,7 +22,7 @@
        app:layout_constraintStart_toStartOf="parent"
        app:layout_constraintTop_toTopOf="parent"
        app:layout_constraintVertical_bias="0.0"
-       tools:ignore="SpeakableTextPresentCheck" />
+       tools:ignore="ContentDescription,SpeakableTextPresentCheck" />
 
    <com.google.android.material.floatingactionbutton.FloatingActionButton
        android:id="@+id/confirmLoc"
@@ -53,6 +53,73 @@
        app:layout_constraintTop_toBottomOf="@+id/addLocBtn"
        tools:ignore="SpeakableTextPresentCheck" />
 
+<!--   <EditText-->
+<!--       android:id="@+id/locNameTextField"-->
+<!--       android:layout_width="wrap_content"-->
+<!--       android:layout_height="wrap_content"-->
+<!--       android:layout_marginTop="8dp"-->
+<!--       android:ems="10"-->
+<!--       android:inputType="textPersonName"-->
+<!--       android:minHeight="48dp"-->
+<!--       android:text="@string/name"-->
+<!--       android:visibility="invisible"-->
+<!--       app:layout_constraintEnd_toEndOf="@+id/addLocBtn"-->
+<!--       app:layout_constraintHorizontal_bias="1.0"-->
+<!--       app:layout_constraintStart_toStartOf="parent"-->
+<!--       app:layout_constraintTop_toTopOf="parent" />-->
+
+   <Button
+       android:id="@+id/tochecklist"
+       android:layout_width="110dp"
+       android:layout_height="40dp"
+       android:layout_marginStart="2dp"
+       android:layout_marginBottom="5dp"
+       android:background="#024E4D"
+       android:text="@string/to_checklist"
+       android:textColor="#FFFFFF"
+       app:layout_constraintBottom_toBottomOf="parent"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintHorizontal_bias="0.0"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toTopOf="parent"
+       app:layout_constraintVertical_bias="1.0"
+       tools:ignore="TextContrastCheck,TouchTargetSizeCheck" />
+
+   <Button
+       android:id="@+id/saveBtn"
+       android:layout_width="80dp"
+       android:layout_height="40dp"
+       android:layout_marginStart="2dp"
+       android:layout_marginBottom="4dp"
+       android:background="#024E4D"
+       android:text="@string/save"
+       android:textColor="#FFFFFF"
+       app:layout_constraintBottom_toTopOf="@+id/loadBtn"
+       app:layout_constraintStart_toStartOf="parent"
+       tools:ignore="TouchTargetSizeCheck" />
+
+   <fragment
+       android:id="@+id/google_map"
+       android:name="com.google.android.gms.maps.SupportMapFragment"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+
+       tools:layout_editor_absoluteX="-1dp"
+       tools:layout_editor_absoluteY="-301dp" />
+
+   <Button
+       android:id="@+id/loadBtn"
+       android:layout_width="80dp"
+       android:layout_height="40dp"
+       android:layout_marginStart="2dp"
+       android:layout_marginBottom="4dp"
+       android:background="#024E4D"
+       android:text="@string/load"
+       android:textColor="#FFFFFF"
+       app:layout_constraintBottom_toTopOf="@+id/tochecklist"
+       app:layout_constraintStart_toStartOf="parent"
+       tools:ignore="TouchTargetSizeCheck" />
+
    <EditText
        android:id="@+id/locNameTextField"
        android:layout_width="wrap_content"
@@ -61,53 +128,12 @@
        android:ems="10"
        android:inputType="textPersonName"
        android:minHeight="48dp"
-       android:text="Name"
+       android:text="@string/name"
        android:visibility="invisible"
        app:layout_constraintEnd_toEndOf="@+id/addLocBtn"
        app:layout_constraintHorizontal_bias="1.0"
        app:layout_constraintStart_toStartOf="parent"
-       app:layout_constraintTop_toTopOf="parent" />
-
-   <Button
-       android:id="@+id/tochecklist"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:layout_marginStart="2dp"
-       android:text="To Checklist"
-       app:layout_constraintBottom_toBottomOf="@+id/google_map"
-       app:layout_constraintEnd_toEndOf="parent"
-       app:layout_constraintHorizontal_bias="0.0"
-       app:layout_constraintStart_toStartOf="parent"
-       app:layout_constraintTop_toTopOf="parent"
-       app:layout_constraintVertical_bias="1.0" />
-
-   <Button
-       android:id="@+id/saveBtn"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:layout_marginStart="2dp"
-       android:text="save"
-       app:layout_constraintBottom_toTopOf="@+id/loadBtn"
-       app:layout_constraintStart_toStartOf="parent" />
-
-   <fragment
-       android:id="@+id/google_map"
-       android:name="com.google.android.gms.maps.SupportMapFragment"
-       android:layout_width="match_parent"
-       android:layout_height="match_parent"
-
-       tools:layout_editor_absoluteX="0dp"
-       tools:layout_editor_absoluteY="1dp" />
-
-   <Button
-       android:id="@+id/loadBtn"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:layout_marginStart="2dp"
-       android:layout_marginBottom="4dp"
-       android:text="load"
-       app:layout_constraintBottom_toTopOf="@+id/tochecklist"
-       app:layout_constraintStart_toStartOf="parent" />
+       app:layout_constraintTop_toTopOf="parent"  />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

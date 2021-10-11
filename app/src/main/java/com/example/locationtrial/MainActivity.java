@@ -159,8 +159,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         confirmLoc.setOnClickListener(view -> {
             LatLng newPos = selectedLoc.getPosition();
             //TODO: FIX stupid text field error --> counter as temporary replacement
-            String newName = "Loc" + randCounter; //locNameText.getText().toString();
-            randCounter++;
+            String newName = locNameText.getText().toString();
             locations.add(new Places(newPos, newName));
             createNotification("New Place Added", "hi");
             confirmLoc.setVisibility(View.INVISIBLE);
@@ -189,6 +188,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             deleteLoc.setVisibility(View.GONE);
             confirmLoc.setVisibility(View.GONE);
             openFragment.setVisibility(View.GONE);
+            save.setVisibility(View.GONE);
+            load.setVisibility(View.GONE);
             Fragment fragment = new ListTasks();
             fragment.setArguments(bundle);
             getSupportFragmentManager().beginTransaction().replace(R.id.main_activity, fragment).commit();
