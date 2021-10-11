@@ -353,7 +353,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
-    private void sendNotification(String title, String content) {
+    public void sendNotification(String title, String content) {
         String NOTIFICATION_CHANNEL_ID = "edmt_multiple_location";
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){

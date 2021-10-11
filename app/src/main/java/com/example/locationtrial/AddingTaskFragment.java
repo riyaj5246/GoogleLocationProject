@@ -134,7 +134,7 @@ public class AddingTaskFragment extends Fragment {
                 clearAllFields();
 
                 System.out.println("getting to add task");
-
+                notifyTimeLeft(newTask);
                 Fragment backToChecklist = new ListTasks();
                 Bundle bundle = new Bundle();
                 bundle.putParcelableArrayList("Tasks List", allTasks);
@@ -150,6 +150,33 @@ public class AddingTaskFragment extends Fragment {
         return screenview;
     }
 
+    private void notifyTimeLeft(Tasks newTask) {
+        String timeleft = "";
+        for(int i = 0; i < 4; i++){
+            String unitOfTime = "";
+            switch(i){
+                case(0):
+                    unitOfTime = "Years";
+                    break;
+                case(1):
+                    unitOfTime = "Days";
+                    break;
+                case(2):
+                    unitOfTime = "Hours";
+                    break;
+                case(3):
+                    unitOfTime = "Minutes";
+                    break;
+            }
+            if(newTask.getTimeTillTask()[i] != 0){
+                String x = newTask.getTimeTillTask()[i] + " " + unitOfTime + ", ";
+                timeleft = timeleft + x;
+            }
+        }
+        timeleft = timeleft.substring(0, timeleft.length() - 2);
+        timeleft = timeleft + " until task due!";
+        ((MainActivity) getActivity()).sendNotification(newTask.getTaskName() + " added!", timeleft);
+    }
 
 
     public boolean validateFields() {
